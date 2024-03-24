@@ -16,11 +16,11 @@ st.write('This site helps you to predict the resale price of the flats in singap
 st.write('This model is built on historical data ranging from 1990s to present day')
 
 st.write("_Start predicting_")
-df1 = pd.read_csv(rf"https://drive.google.com/file/d/18HkaCMDHRmi3NKddN_4Zu1jM3Q4TIJY-/view?usp=sharing")
-df2 = pd.read_csv(rf"https://drive.google.com/file/d/1uzO91O-JWTqfaDd-IqEVwTnOjFv8Vc9b/view?usp=sharing")
-df3 = pd.read_csv(rf"https://drive.google.com/file/d/151NQjJCyp3KJNvU0POuegOb9OM8a2fdI/view?usp=sharing")
-df4 = pd.read_csv(rf"https://drive.google.com/file/d/1EhdRpjv3ihkPq6SFs76tFZX2ELJNDVfq/view?usp=sharing")
-df5 = pd.read_csv(rf"https://drive.google.com/file/d/1YjiciCEJuj4TWuz83i0gweZoFFgEhR2Y/view?usp=sharing")
+df1 = pd.read_csv(data_1990_1999.csv)
+df2 = pd.read_csv(data_2000_2012.csv)
+df3 = pd.read_csv(data_20012_2014.csv)
+df4 = pd.read_csv(data_2015_2016.csv)
+df5 = pd.read_csv(data_2017_present.csv)
 df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True)
 
 #preprocessing:::::
