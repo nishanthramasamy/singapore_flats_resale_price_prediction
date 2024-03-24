@@ -18,7 +18,7 @@ st.write('This model is built on historical data ranging from 1990s to present d
 st.write("_Start predicting_")
 df1 = pd.read_csv("data_1990_1999.csv")
 df2 = pd.read_csv("data_2000_2012.csv")
-df3 = pd.read_csv("data_20012_2014.csv")
+df3 = pd.read_csv("data_2012_2014.csv")
 df4 = pd.read_csv("data_2015_2016.csv")
 df5 = pd.read_csv("data_2017_present.csv")
 df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True)
