@@ -10,7 +10,7 @@ from sklearn.model_selection import RandomizedSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-tab1, tab2, tab3 = st.tabs(["Home", "Calculate"])
+tab1, tab2 = st.tabs(["Home", "Calculate"])
 
 with tab1:
 
