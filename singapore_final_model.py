@@ -10,7 +10,7 @@ from sklearn.model_selection import RandomizedSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-tab1, tab2, tab3 = st.tabs(["Home", "Calculate", "Know More"])
+tab1, tab2, tab3 = st.tabs(["Home", "Calculate"])
 
 with tab1:
 
@@ -144,7 +144,7 @@ with tab2:
             final_price = round(final_price[0])
             st.write(f"The resale value of flat of your choice is :blue[{final_price}] GSD")
 
-
+"""
 with tab3:
     st.write("This section gives you information behind the model. Check below for more details")
 
@@ -214,4 +214,4 @@ with tab3:
 
     #RandomForest:
     st.write(f"MAE - RandomForest: {mae_random}")
-    st.write(f"R^2 Score - RandomForest: {r2score_random:.2f}")
+    st.write(f"R^2 Score - RandomForest: {r2score_random:.2f}") """
