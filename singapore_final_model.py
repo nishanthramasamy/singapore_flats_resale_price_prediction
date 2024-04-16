@@ -123,7 +123,15 @@ with tab2:
     dt_regressor = RandomForestRegressor()
     decision_model = RandomForestRegressor(random_state=42)
     decision_model.fit(x_train, y_train)
-    y_pred_random = decision_model.predict(x_test)
+
+    #PICKLING:::
+    with open("model.pk1", "wb") as file:
+        pickle.dump(decision_model, file)
+
+    with open("model.pk1", "rb") as file:
+        unloaded = pickle.load(file)
+
+    y_pred_random = unloaded.predict(x_test)
     mae_random = mean_absolute_error(y_pred_random, y_test)
     r2score_random = r2_score(y_pred_random, y_test)
 
@@ -144,74 +152,75 @@ with tab2:
             final_price = round(final_price[0])
             st.write(f"The resale value of flat of your choice is :blue[{final_price}] GSD")
 
-"""
-with tab3:
-    st.write("This section gives you information behind the model. Check below for more details")
+
+# with tab3:
+#     st.write("This section gives you information behind the model. Check below for more details")
 
 
-    st.header("Parameter Selection:")
-    st.write("The dataset had many features like street name, blocks, town etc. But we use certain features which help in creating model.")
+#     st.header("Parameter Selection:")
+#     st.write("The dataset had many features like street name, blocks, town etc. But we use certain features which help in creating model.")
 
-    st.write("Click below to visualise relationship between features")
+#     st.write("Click below to visualise relationship between features")
 
-    st1, st2, st3, st4 = st.columns([5,5,5,5])
-    with st1:
-        visual = st.button("Click here to see the charts")
+#     st1, st2, st3, st4 = st.columns([5,5,5,5])
+#     with st1:
+#         visual = st.button("Click here to see the charts")
    
-     #EDA::: Visualising the features with respect to target variable to understand the relationship
-    if visual:
-        col1, col2= st.columns([5,5])
-        with col1:
-            fig, ax = plt.subplots()
-            sns.scatterplot(data=df, x='year', y='resale_price', ax=ax)
-            plt.xticks(rotation=90)
-            st.pyplot(fig)
-        with col2:
-            fig, ax = plt.subplots()
-            plt.figure(figsize=(10, 6))
-            sns.scatterplot(data=df, x='flat_model', y='resale_price', ax=ax)
-            plt.xticks(rotation=90)
-            st.pyplot(fig)
-        col3, col4 = st.columns([5,5])
-        with col3:
-            fig, ax = plt.subplots()
-            plt.figure(figsize=(10, 6))
-            sns.scatterplot(data=df, x='town', y='resale_price', ax=ax)
-            plt.xticks(rotation=90)
-            st.pyplot(fig)
-        with col4:
-            fig, ax = plt.subplots()
-            sns.scatterplot(data=df, x='flat_type_modified', y='resale_price', ax=ax)
-            plt.xticks(rotation=90)  # Rotate x-axis labels for better readability
-            st.pyplot(fig)
+#      #EDA::: Visualising the features with respect to target variable to understand the relationship
+#     if visual:
+#         col1, col2= st.columns([5,5])
+#         with col1:
+#             fig, ax = plt.subplots()
+#             sns.scatterplot(data=df, x='year', y='resale_price', ax=ax)
+#             plt.xticks(rotation=90)
+#             st.pyplot(fig)
+#         with col2:
+#             fig, ax = plt.subplots()
+#             plt.figure(figsize=(10, 6))
+#             sns.scatterplot(data=df, x='flat_model', y='resale_price', ax=ax)
+#             plt.xticks(rotation=90)
+#             st.pyplot(fig)
+#         col3, col4 = st.columns([5,5])
+#         with col3:
+#             fig, ax = plt.subplots()
+#             plt.figure(figsize=(10, 6))
+#             sns.scatterplot(data=df, x='town', y='resale_price', ax=ax)
+#             plt.xticks(rotation=90)
+#             st.pyplot(fig)
+#         with col4:
+#             fig, ax = plt.subplots()
+#             sns.scatterplot(data=df, x='flat_type_modified', y='resale_price', ax=ax)
+#             plt.xticks(rotation=90) 
+#             st.pyplot(fig)
 
-    st.write("Feature importance:")
-    importance_scores = decision_model.feature_importances_
-    scores = []
-    col = features_dict.keys
-    for x in importance_scores:
-        scores.append(x)
-    data = {"features":["Town", "Flat type", "Flat model", "Floor Area", "Year", "Remaining Lease"],
-            "importance score": scores}
-    sc = pd.DataFrame(data)
-    st.dataframe(sc)
+#     st.write("Feature importance:")
+#     importance_scores = decision_model.feature_importances_
+#     scores = []
+#     col = features_dict.keys
+#     for x in importance_scores:
+#         scores.append(x)
+#     data = {"features":["Town", "Flat type", "Flat model", "Floor Area", "Year", "Remaining Lease"],
+#             "importance score": scores}
+#     sc = pd.DataFrame(data)
+#     st.dataframe(sc)
 
-    st.header("Model used:")
-    #DecisionTree:::
-    x = df[['encoded_town', 'encoded_flat_type', 'encoded_flat_model', 'floor_area_sqm', 'year', 'remaining_lease']]
-    y = df['resale_price']
-    x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.3, random_state=42)
-    decision_model = DecisionTreeRegressor(random_state=42)
-    decision_model.fit(x_train, y_train)
-    y_pred = decision_model.predict(x_test)
-    mae = mean_absolute_error(y_pred, y_test)
-    r2 = r2_score(y_test, y_pred)
+#     st.header("Model used:")
+#     #DecisionTree:::
+#     x = df[['encoded_town', 'encoded_flat_type', 'encoded_flat_model', 'floor_area_sqm', 'year', 'remaining_lease']]
+#     y = df['resale_price']
+#     x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.3, random_state=42)
+#     decision_model = DecisionTreeRegressor(random_state=42)
+#     decision_model.fit(x_train, y_train)
+#     y_pred = decision_model.predict(x_test)
+#     mae = mean_absolute_error(y_pred, y_test)
+#     r2 = r2_score(y_test, y_pred)
     
 
-    st.write("The model is trained on :orange[RandomForestRegressor]. Initially :orange[LinearRegression], :orange[DecisionTreeRegressor] where tried but their performance was low compared to Randomforest")
-    st.write(f"DecisionTree : R^2 Score: {r2:.2f}")
-    st.write("Decision Tree - MAE:", mae)
+#     st.write("The model is trained on :orange[RandomForestRegressor]. Initially :orange[LinearRegression], :orange[DecisionTreeRegressor] where tried but their performance was low compared to Randomforest")
+#     st.write(f"DecisionTree : R^2 Score: {r2:.2f}")
+#     st.write("Decision Tree - MAE:", mae)
 
-    #RandomForest:
-    st.write(f"MAE - RandomForest: {mae_random}")
-    st.write(f"R^2 Score - RandomForest: {r2score_random:.2f}") """
+#     #RandomForest:
+#     st.write(f"MAE - RandomForest: {mae_random}")
+#     st.write(f"R^2 Score - RandomForest: {r2score_random:.2f}")
+
