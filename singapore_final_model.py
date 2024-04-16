@@ -72,66 +72,74 @@ features_dict = {
 }
 
 with tab2:
+    try:
 #selecting the features
-    towns = df['town'].unique().tolist()
-    town_selected = st.selectbox("Choose the town ", towns)
-    features_dict['town'] = get_encoded(town_selected, df['town'])
-    #df['encoded_town'], features_dict['town'] = get_encoded(df['town'],town_selected)
+        towns = df['town'].unique().tolist()
+        town_selected = st.selectbox("Choose the town ", towns)
+        if town_selected:
+            features_dict['town'] = get_encoded(town_selected, df['town'])
+        else:
+            features_dict['town'] = get_encoded("WOODLANDS", df['town'])
 
 
 
-    flat_types = df['flat_type_modified'].unique()
-    flat_type = st.selectbox("choose the flat type", flat_types)
-    features_dict['flat_type'] = get_encoded(flat_type, df['flat_type_modified'])
-    #df['encoded_flat_type'], features_dict['flat_type'] = get_encoded(df['flat_type_modified'], flat_type)
+        flat_types = df['flat_type_modified'].unique()
+        flat_type = st.selectbox("choose the flat type", flat_types)
+        if flat_type:
+            features_dict['flat_type'] = get_encoded(flat_type, df['flat_type_modified'])
+        else:
+            features_dict['flat_type'] = get_encoded("3 ROOM", df['flat_type_modified'])
         
+            
 
 
-    flat_models = df['flat_model'].unique()
-    flat_model = st.selectbox("choose the flat model", flat_models)
-    features_dict['flat_model'] = get_encoded(flat_model, df['flat_model'])
-    #df['encoded_flat_model'], features_dict['flat_model'] = get_encoded(df['flat_model'], flat_model)
-        
-        
-    floors = df['floor_area_sqm'].unique()
-    floor_area = st.text_input("Choose the floor area (eg: 45.00, 67.65) in sq meter")
-    if floor_area:
-        floor_area = int(floor_area)
-    else:
-        floor_area = df['floor_area_sqm'].mean()
-    features_dict['floor_area_sqm'] = int(floor_area)
+        flat_models = df['flat_model'].unique()
+        flat_model = st.selectbox("choose the flat model", flat_models)
+        if flat_model:
+            features_dict['flat_model'] = get_encoded(flat_model, df['flat_model'])
+        else:
+            features_dict['flat_model'] = get_encoded("STANDARD", df['flat_model'])
+            
+            
+        floors = df['floor_area_sqm'].unique()
+        floor_area = st.text_input("Choose the floor area (eg: 45.00, 67.65) in sq meter")
+        if floor_area:
+            floor_area = int(floor_area)
+        else:
+            floor_area = df['floor_area_sqm'].mean()
+        features_dict['floor_area_sqm'] = int(floor_area)
 
 
-    years = df['year'].unique()
-    year = st.selectbox("Choose the year of contruction", years)
-    features_dict['year'] = year
+        years = df['year'].unique()
+        year = st.selectbox("Choose the year of contruction", years)
+        if year:
+            features_dict['year'] = year
+        else:
+            features_dict['year'] = 2000
 
 
-    leases = df['remaining_lease'].unique()
-    lease = st.text_input("choose the remaining years of lease (Eg: 96, 45)")
-    if lease:
-        lease = int(lease)
-    else:
-        lease = 0
-    features_dict['remaining_lease'] = int(lease)
+        leases = df['remaining_lease'].unique()
+        lease = st.text_input("choose the remaining years of lease (Eg: 96, 45)")
+        if lease:
+            lease = int(lease)
+        else:
+            lease = 0
+        features_dict['remaining_lease'] = int(lease)
 
 
-    loaded_model = joblib.load('random_model.pkl.gz')
+        loaded_model = joblib.load('random_model.pkl.gz')
 
-    predict = st.button("PREDICT")
-    if predict:            
+        predict = st.button("PREDICT")
+        if predict:            
 
-        
-        #st.write("randomforest mae", mae)
+            #Predicting unknown choice from user
+            x_final = []
+            for i in list(features_dict.values()):
+                if i :
+                    x_final.append(i)
 
-        #Predicting unknown choice from user
-        x_final = []
-        #st.write("features_dict.values=", features_dict.values())
-        for i in list(features_dict.values()):
-            if i :
-                x_final.append(i)
-        #st.write("x_final= ", x_final) 
-        final_price = loaded_model.predict([x_final])
-        final_price = round(final_price[0])
-        st.write(f"The resale value of flat of your choice is :blue[{final_price}] GSD")
-
+            final_price = loaded_model.predict([x_final])
+            final_price = round(final_price[0])
+            st.write(f"The resale value of flat of your choice is :blue[{final_price}] GSD")
+    except:
+        st.write("Kindly Enter all the fields to calculate the price")
